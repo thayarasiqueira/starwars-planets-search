@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
+// import response from '../testData';
 
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
@@ -11,20 +12,25 @@ function Provider({ children }) {
   }
 
   useEffect(() => {
-    const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+    if (planetsList.length === 0) {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
-    const fetchPlanetsList = async () => {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      const { results } = data;
-      setPlanetsList(results);
-    };
-    fetchPlanetsList();
+      const fetchPlanetsList = async () => {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        const { results } = data;
+        setPlanetsList(results);
+      };
+      fetchPlanetsList();
+    }
+  });
+
+  useEffect(() => {
     if (inputPlanet !== '') {
       const newList = planetsList.filter((e) => e.name.includes(inputPlanet));
       setPlanetsList(newList);
     }
-  }, [inputPlanet, planetsList]);
+  }, [inputPlanet]);
 
   const context = {
     planetsList,
