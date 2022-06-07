@@ -7,6 +7,20 @@ function Planets() {
   return (
     <section>
       <input data-testid="name-filter" type="text" onChange={ handleChange } />
+      <select data-testid="column-filter">
+        <option>population</option>
+        <option>orbital_period</option>
+        <option>diameter</option>
+        <option>rotation_period</option>
+        <option>surface_water</option>
+      </select>
+      <select data-testid="comparison-filter">
+        <option>maior que</option>
+        <option>menor que</option>
+        <option>igual a</option>
+      </select>
+      <input data-testid="value-filter" type="number" />
+      <button data-testid="button-filter" type="button">Filtrar</button>
       <table>
         <thead>
           <tr>

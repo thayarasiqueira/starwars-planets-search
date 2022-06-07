@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Context from './Context';
 // import response from '../testData';
 
+const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
   const [inputPlanet, setInputPlanet] = useState('');
@@ -11,24 +13,23 @@ function Provider({ children }) {
     setInputPlanet(target.value);
   }
 
-  useEffect(() => {
-    if (planetsList.length === 0) {
-      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+  async function fetchPlanetsList() {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    const { results } = data;
+    setPlanetsList(results);
+  }
 
-      const fetchPlanetsList = async () => {
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        const { results } = data;
-        setPlanetsList(results);
-      };
-      fetchPlanetsList();
-    }
+  useEffect(() => {
+    fetchPlanetsList();
   });
 
   useEffect(() => {
     if (inputPlanet !== '') {
       const newList = planetsList.filter((e) => e.name.includes(inputPlanet));
       setPlanetsList(newList);
+    } else {
+      fetchPlanetsList();
     }
   }, [inputPlanet]);
 
