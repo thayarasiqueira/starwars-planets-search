@@ -4,6 +4,11 @@ import Context from './Context';
 
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
+  const [inputPlanet, setInputPlanet] = useState('');
+
+  function handleChange({ target }) {
+    setInputPlanet(target.value);
+  }
 
   useEffect(() => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -15,10 +20,16 @@ function Provider({ children }) {
       setPlanetsList(results);
     };
     fetchPlanetsList();
-  });
+    if (inputPlanet !== '') {
+      const newList = planetsList.filter((e) => e.name.includes(inputPlanet));
+      setPlanetsList(newList);
+    }
+  }, [inputPlanet, planetsList]);
 
   const context = {
     planetsList,
+    setPlanetsList,
+    handleChange,
   };
 
   return (
