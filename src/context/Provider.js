@@ -7,29 +7,40 @@ const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
-  const [inputPlanet, setInputPlanet] = useState('');
+  const [inputPlanet, setInputPlanet] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
+  const [filteredList, setFilteredList] = useState([]);
 
   function handleChange({ target }) {
-    setInputPlanet(target.value);
-  }
-
-  async function fetchPlanetsList() {
-    const response = await fetch(endpoint);
-    const data = await response.json();
-    const { results } = data;
-    setPlanetsList(results);
+    setInputPlanet({
+      filterByName: {
+        name: target.value.toLowerCase(),
+      },
+    });
   }
 
   useEffect(() => {
+    const fetchPlanetsList = async () => {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      const { results } = data;
+      setPlanetsList(results);
+      setFilteredList(results);
+    };
     fetchPlanetsList();
-  });
+  }, []);
 
   useEffect(() => {
-    if (inputPlanet !== '') {
-      const newList = planetsList.filter((e) => e.name.includes(inputPlanet));
-      setPlanetsList(newList);
+    if (inputPlanet.filterByName.name === '') {
+      setPlanetsList(filteredList);
     } else {
-      fetchPlanetsList();
+      const newList = planetsList.filter(
+        (e) => e.name.toLowerCase().includes(inputPlanet.filterByName.name),
+      );
+      setPlanetsList(newList);
     }
   }, [inputPlanet]);
 
