@@ -13,6 +13,12 @@ function Provider({ children }) {
     },
   });
   const [filteredList, setFilteredList] = useState([]);
+  const [filterByNumber, setFilterByNumber] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: Number(0),
+  });
+  const [clickFilter, setClickFilter] = useState(false);
 
   function handleChange({ target }) {
     setInputPlanet({
@@ -44,10 +50,50 @@ function Provider({ children }) {
     }
   }, [inputPlanet]);
 
+  function handleFilterByNumber({ target }) {
+    const { name, value } = target;
+    setFilterByNumber({
+      ...filterByNumber,
+      [name]: value,
+    });
+  }
+
+  useEffect(() => {
+    let newList = filteredList;
+    const { column, comparison, value } = filterByNumber;
+    if (comparison === 'maior que') {
+      newList = newList.filter((e) => Number(e[column]) > Number(value));
+    }
+    if (comparison === 'igual a') {
+      newList = newList.filter(
+        (e) => Number(e[column]) === Number(value),
+      );
+    }
+    if (comparison === 'menor que') {
+      newList = newList.filter((e) => Number(e[column]) < Number(value));
+    }
+    console.log(typeof value);
+    setPlanetsList(newList);
+  }, [clickFilter]);
+
+  function handleClick() {
+    if (clickFilter === false) {
+      setClickFilter(true);
+    } else {
+      setClickFilter(false);
+    }
+  }
+
   const context = {
     planetsList,
-    setPlanetsList,
     handleChange,
+    handleFilterByNumber,
+    handleClick,
+    filterByNumber: {
+      column: 'population',
+      comparison: 'maior que',
+      value: 0,
+    },
   };
 
   return (

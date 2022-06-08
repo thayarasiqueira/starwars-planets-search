@@ -2,25 +2,47 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Planets() {
-  const { planetsList, handleChange } = useContext(Context);
-
+  const {
+    planetsList, handleChange, handleFilterByNumber, handleClick, filterByNumber,
+  } = useContext(Context);
+  const { value } = filterByNumber;
   return (
     <section>
       <input data-testid="name-filter" type="text" onChange={ handleChange } />
-      <select data-testid="column-filter">
+      <select
+        data-testid="column-filter"
+        onChange={ handleFilterByNumber }
+        name="column"
+      >
         <option>population</option>
         <option>orbital_period</option>
         <option>diameter</option>
         <option>rotation_period</option>
         <option>surface_water</option>
       </select>
-      <select data-testid="comparison-filter">
+      <select
+        data-testid="comparison-filter"
+        onChange={ handleFilterByNumber }
+        name="comparison"
+      >
         <option>maior que</option>
         <option>menor que</option>
         <option>igual a</option>
       </select>
-      <input data-testid="value-filter" type="number" />
-      <button data-testid="button-filter" type="button">Filtrar</button>
+      <input
+        data-testid="value-filter"
+        type="number"
+        onChange={ handleFilterByNumber }
+        name="value"
+        value={ value }
+      />
+      <button
+        data-testid="button-filter"
+        type="button"
+        onClick={ handleClick }
+      >
+        Filtrar
+      </button>
       <table>
         <thead>
           <tr>
