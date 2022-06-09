@@ -59,7 +59,7 @@ function Provider({ children }) {
   }
 
   useEffect(() => {
-    let newList = filteredList;
+    let newList = planetsList;
     const { column, comparison, value } = filterByNumber;
     if (comparison === 'maior que') {
       newList = newList.filter((e) => Number(e[column]) > Number(value));
@@ -72,7 +72,6 @@ function Provider({ children }) {
     if (comparison === 'menor que') {
       newList = newList.filter((e) => Number(e[column]) < Number(value));
     }
-    console.log(typeof value);
     setPlanetsList(newList);
   }, [clickFilter]);
 
