@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
-// import response from '../testData';
 
 const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
   const [inputPlanet, setInputPlanet] = useState({
@@ -19,6 +17,8 @@ function Provider({ children }) {
     value: Number(0),
   });
   const [clickFilter, setClickFilter] = useState(false);
+  const [search, setSearch] = useState([]);
+  const [filterColumn, setFilterColumn] = useState([]);
 
   function handleChange({ target }) {
     setInputPlanet({
@@ -37,6 +37,8 @@ function Provider({ children }) {
       setFilteredList(results);
     };
     fetchPlanetsList();
+    setFilterColumn(['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water']);
   }, []);
 
   useEffect(() => {
@@ -81,6 +83,10 @@ function Provider({ children }) {
     } else {
       setClickFilter(false);
     }
+    setSearch(() => [
+      { ...filterByNumber }]);
+    const newColumn = filterColumn.filter((e) => e !== filterByNumber.column);
+    setFilterColumn(newColumn);
   }
 
   const context = {
@@ -93,6 +99,8 @@ function Provider({ children }) {
       comparison: 'maior que',
       value: 0,
     },
+    search,
+    filterColumn,
   };
 
   return (

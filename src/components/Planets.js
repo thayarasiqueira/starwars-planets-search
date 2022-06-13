@@ -3,9 +3,16 @@ import Context from '../context/Context';
 
 function Planets() {
   const {
-    planetsList, handleChange, handleFilterByNumber, handleClick, filterByNumber,
+    planetsList,
+    handleChange,
+    handleFilterByNumber,
+    handleClick,
+    filterByNumber,
+    search,
+    filterColumn,
   } = useContext(Context);
   const { value } = filterByNumber;
+  console.log(filterColumn.length);
   return (
     <section>
       <input data-testid="name-filter" type="text" onChange={ handleChange } />
@@ -14,11 +21,9 @@ function Planets() {
         onChange={ handleFilterByNumber }
         name="column"
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        {filterColumn.map((e, index) => (
+          <option key={ index }>{ e }</option>
+        ))}
       </select>
       <select
         data-testid="comparison-filter"
@@ -43,6 +48,13 @@ function Planets() {
       >
         Filtrar
       </button>
+      {search.length === 0 ? null : search.map((e, index) => (
+        <p key={ index }>
+          {e.column}
+          {e.comparison}
+          {e.value}
+        </p>
+      ))}
       <table>
         <thead>
           <tr>
