@@ -83,10 +83,20 @@ function Provider({ children }) {
     } else {
       setClickFilter(false);
     }
-    setSearch(() => [
-      { ...filterByNumber }]);
+    setSearch((prev) => [...prev,
+      filterByNumber]);
     const newColumn = filterColumn.filter((e) => e !== filterByNumber.column);
     setFilterColumn(newColumn);
+  }
+
+  function handleRemoveAll() {
+    setFilterColumn(['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water']);
+    setSearch([]);
+  }
+
+  function handleRemove({ target }) {
+    search.splice(target.value);
   }
 
   const context = {
@@ -101,6 +111,8 @@ function Provider({ children }) {
     },
     search,
     filterColumn,
+    handleRemoveAll,
+    handleRemove,
   };
 
   return (

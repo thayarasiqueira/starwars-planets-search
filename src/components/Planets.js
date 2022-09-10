@@ -10,6 +10,8 @@ function Planets() {
     filterByNumber,
     search,
     filterColumn,
+    handleRemoveAll,
+    handleRemove,
   } = useContext(Context);
   const { value } = filterByNumber;
   console.log(filterColumn.length);
@@ -48,12 +50,20 @@ function Planets() {
       >
         Filtrar
       </button>
+      <button
+        data-testid="button-remove-filters"
+        type="button"
+        onClick={ handleRemoveAll }
+      >
+        Remover Filtros
+      </button>
       {search.length === 0 ? null : search.map((e, index) => (
-        <p key={ index }>
-          {e.column}
-          {e.comparison}
-          {e.value}
-        </p>
+        <div data-testid="filter" key={ index }>
+          <span>
+            {`${e.column} ${e.comparison} ${e.value} `}
+          </span>
+          <button type="button" onClick={ handleRemove }>X</button>
+        </div>
       ))}
       <table>
         <thead>
